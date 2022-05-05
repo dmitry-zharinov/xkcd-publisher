@@ -1,9 +1,8 @@
 import os
-from pathlib import Path
 
 from dotenv import load_dotenv
 
-from utils import download_image, get_extension_from_url
+from utils import download_image, get_extension_from_url, remove_image
 from vk import upload_photo, wall_post
 from xkcd import fetch_random_comic
 
@@ -13,7 +12,7 @@ IMG_FOLDER_NAME = 'images'
 def main():
     load_dotenv()
 
-    Path(IMG_FOLDER_NAME).mkdir(parents=True, exist_ok=True)
+    # Path(IMG_FOLDER_NAME).mkdir(parents=True, exist_ok=True)
 
     xkcd = fetch_random_comic()
 
@@ -22,12 +21,13 @@ def main():
     filename = f'xkcd{get_extension_from_url(img_url)}'
     download_image(img_url,
                    filename,
-                   IMG_FOLDER_NAME,
                    '')
 
     group_id = os.environ['VK_GROUP_ID']
-    photo = upload_photo(group_id, IMG_FOLDER_NAME, filename)
+    photo = upload_photo(group_id, filename)
     wall_post(group_id, photo, message)
+
+    remove_image(filename)
 
 
 if __name__ == '__main__':

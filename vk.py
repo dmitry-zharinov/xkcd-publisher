@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 
 import requests
 from dotenv import load_dotenv
@@ -25,12 +24,11 @@ def get_upload_url(group_id):
     return response.json()['response']['upload_url']
 
 
-def upload_photo(group_id, filepath, filename):
+def upload_photo(group_id, filename):
     """Загрузить фото на сервер"""
     url = get_upload_url(group_id)
-    photo_path = Path(filepath) / filename
     files = {
-        'photo': (filename, open(photo_path, 'rb'))
+        'photo': (filename, open(filename, 'rb'))
     }
     response_post = requests.post(url, files=files)
     response_post.raise_for_status()
