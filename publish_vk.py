@@ -51,14 +51,14 @@ def upload_photo(group_id, filepath, filename):
     return response.json()['response']
 
 
-def wall_post(group_id, photo):
+def wall_post(group_id, photo, message):
     photo = photo[0]
     photo = 'photo'+ '-' + str(photo['owner_id']) + '_' + str(photo['id'])
     params = {
         'access_token': TOKEN,
         'v': API_VERSION,
         'attachments': photo,
-        'message': 'Просто текст...',
+        'message': message,
         'owner_id': '-' + group_id,
         'from_group': '1'
     }
