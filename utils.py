@@ -5,9 +5,9 @@ from urllib.parse import unquote, urlsplit
 import requests
 
 
-def download_image(url, filename, payload):
+def download_image(url, filename):
     """Скачать картинку"""
-    response = requests.get(url, payload)
+    response = requests.get(url)
     response.raise_for_status()
     with open(Path(filename), 'wb') as file:
         file.write(response.content)
@@ -20,5 +20,6 @@ def get_extension_from_url(url):
 
 
 def remove_image(filename):
+    """Удалить картинку"""
     file_to_remove = Path(filename)
     file_to_remove.unlink()

@@ -12,16 +12,11 @@ IMG_FOLDER_NAME = 'images'
 def main():
     load_dotenv()
 
-    # Path(IMG_FOLDER_NAME).mkdir(parents=True, exist_ok=True)
-
     xkcd = fetch_random_comic()
-
     message = xkcd['alt']
     img_url = xkcd['img']
     filename = f'xkcd{get_extension_from_url(img_url)}'
-    download_image(img_url,
-                   filename,
-                   '')
+    download_image(img_url, filename)
 
     group_id = os.environ['VK_GROUP_ID']
     photo = upload_photo(group_id, filename)
