@@ -59,7 +59,7 @@ def wall_post(group_id, photo, message):
         'v': API_VERSION,
         'attachments': photo_id,
         'message': message,
-        'owner_id': '-' + group_id,
+        'owner_id': f'-{group_id}',
         'from_group': '1'
     }
     response = requests.get(
