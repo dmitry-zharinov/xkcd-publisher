@@ -1,8 +1,9 @@
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 
-from utils import download_image, get_extension_from_url, remove_image
+from utils import download_image, get_extension_from_url
 from vk import upload_photo, wall_post
 from xkcd import fetch_random_comic
 
@@ -22,7 +23,7 @@ def main():
     photo = upload_photo(group_id, filename)
     wall_post(group_id, photo, message)
 
-    remove_image(filename)
+    Path(filename).unlink()
 
 
 if __name__ == '__main__':

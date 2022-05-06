@@ -17,9 +17,3 @@ def get_extension_from_url(url):
     """Получить расширение файла"""
     url_split = urlsplit(url)
     return os.path.splitext(unquote(url_split.path))[1]
-
-
-def remove_image(filename):
-    """Удалить картинку"""
-    file_to_remove = Path(filename)
-    file_to_remove.unlink()
