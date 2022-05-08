@@ -12,7 +12,8 @@ IMG_FOLDER_NAME = 'images'
 
 def main():
     load_dotenv()
-
+    token = os.environ['VK_ACCESS_TOKEN']
+    
     xkcd = fetch_random_comic()
     message = xkcd['alt']
     img_url = xkcd['img']
@@ -20,8 +21,8 @@ def main():
     download_image(img_url, filename)
 
     group_id = os.environ['VK_GROUP_ID']
-    photo = upload_photo(group_id, filename)
-    wall_post(group_id, photo, message)
+    photo = upload_photo(token, group_id, filename)
+    wall_post(token, group_id, photo, message)
 
     Path(filename).unlink()
 

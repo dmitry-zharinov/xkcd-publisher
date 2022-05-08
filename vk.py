@@ -1,18 +1,12 @@
-import os
-
 import requests
-from dotenv import load_dotenv
 
-load_dotenv()
-TOKEN = os.environ['VK_ACCESS_TOKEN']
-CLIENT_ID = os.environ['VK_CLIENT_ID']
 API_VERSION = '5.131'
 
 
-def get_upload_url(group_id):
+def get_upload_url(token, group_id):
     """Получить адрес для загрузки фото"""
     params = {
-        'access_token': TOKEN,
+        'access_token': token,
         'v': API_VERSION,
         'group_id': group_id
     }
@@ -24,9 +18,9 @@ def get_upload_url(group_id):
     return response.json()['response']['upload_url']
 
 
-def upload_photo(group_id, filename):
+def upload_photo(token, group_id, filename):
     """Загрузить фото на сервер"""
-    url = get_upload_url(group_id)
+    url = get_upload_url(token, group_id)
     files = {
         'photo': (filename, open(filename, 'rb'))
     }
@@ -35,7 +29,7 @@ def upload_photo(group_id, filename):
 
     photo_upload = response_post.json()
     params = {
-        'access_token': TOKEN,
+        'access_token': token,
         'v': API_VERSION,
         'group_id': group_id,
         'photo': photo_upload['photo'],
@@ -51,11 +45,11 @@ def upload_photo(group_id, filename):
     return response.json()['response']
 
 
-def wall_post(group_id, photo, message):
+def wall_post(token, group_id, photo, message):
     photo = photo[0]
     photo_id = f'photo{photo["owner_id"]}_{photo["id"]}'
     params = {
-        'access_token': TOKEN,
+        'access_token': token,
         'v': API_VERSION,
         'attachments': photo_id,
         'message': message,
