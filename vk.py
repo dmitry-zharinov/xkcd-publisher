@@ -15,7 +15,9 @@ def get_upload_url(token, group_id):
         params=params
     )
     response.raise_for_status()
-    return response.json()['response']['upload_url']
+    response = response.json()
+    upload_url = handle_response(response)['upload_url']
+    return upload_url
 
 
 def upload_photo(token, group_id, filename):
@@ -41,11 +43,12 @@ def upload_photo(token, group_id, filename):
         params=params
     )
     response.raise_for_status()
-
-    return response.json()['response']
+    response = response.json()
+    return handle_response(response)
 
 
 def wall_post(token, group_id, photo, message):
+    """Выложить фото на стену группы"""
     photo = photo[0]
     photo_id = f'photo{photo["owner_id"]}_{photo["id"]}'
     params = {
@@ -61,3 +64,14 @@ def wall_post(token, group_id, photo, message):
         params=params
     )
     response.raise_for_status()
+    response = response.json()
+    handle_response(response)
+
+
+def handle_response(response):
+    """Обработка ответа от API"""
+    if 'response' in response:
+        return response['response']
+    else:
+        err = response['error']
+        raise requests.HTTPError(f'{err["error_code"]}: {err["error_msg"]}')
