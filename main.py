@@ -26,9 +26,10 @@ def main():
         photo = upload_photo(token, group_id, filename)
         wall_post(token, group_id, photo, message)
 
-        Path(filename).unlink()
     except requests.HTTPError as err:
         print(f'Ошибка {err}')
+    finally:
+        Path(filename).unlink()
 
 
 if __name__ == '__main__':
